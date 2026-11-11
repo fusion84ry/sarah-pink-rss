@@ -24,12 +24,16 @@ jobs:
           python-version: '3.12'
       - name: Generate RSS
         run: python generate.py
-      - name: Commit updated feed
+      - name: Generate Tim Ingold RSS
+        run: python generate_ingold.py
+      - name: Generate combined RSS
+        run: python combine.py
+      - name: Commit updated feeds
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add feed.xml
+          git add feed.xml tim-ingold.xml combined.xml
           if ! git diff --cached --quiet; then
-            git commit -m "Update Sarah Pink ORCID RSS feed"
+            git commit -m "Update Sarah Pink and Tim Ingold ORCID RSS feeds"
             git push
           fi
