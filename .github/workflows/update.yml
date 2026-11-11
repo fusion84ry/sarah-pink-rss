@@ -1,0 +1,35 @@
+name: Update Sarah Pink RSS
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 5 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sarah-pink-rss
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate RSS
+        run: python generate.py
+      - name: Commit updated feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed.xml
+          if ! git diff --cached --quiet; then
+            git commit -m "Update Sarah Pink ORCID RSS feed"
+            git push
+          fi
