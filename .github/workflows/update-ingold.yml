@@ -2,8 +2,6 @@ name: Update Tim Ingold RSS
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '17 5 * * *'
 
 permissions:
   contents: write
